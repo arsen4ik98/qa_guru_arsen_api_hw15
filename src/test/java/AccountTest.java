@@ -33,8 +33,8 @@ public class AccountTest extends TestBase {
     void deletBookUiTest() {
         Response responseapiAccount = apiAccount.loging(userName, password);
         System.out.println("Response: " + responseapiAccount.prettyPrint());
-        System.out.println("Username: " + System.getProperty("userName"));
-        System.out.println("Password: " + System.getProperty("password"));
+        System.out.println("Username: " + userName);
+        System.out.println("Password: " + password);
         String userId = responseapiAccount.path("userId");
         String token = responseapiAccount.path("token");
         String expires = responseapiAccount.path("expires");

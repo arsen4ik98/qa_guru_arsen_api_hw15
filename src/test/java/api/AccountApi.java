@@ -18,6 +18,7 @@ public class AccountApi {
         lombokModelLogin.setPassword(password);
 
         Response response =given(userRequestSpecification)
+                .log().all()
                 .body(lombokModelLogin)
                 .when()
                 .post("/Account/v1/Login")
