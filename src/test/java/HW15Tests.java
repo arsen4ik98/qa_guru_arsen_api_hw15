@@ -1,87 +1,98 @@
+import Models.LombokModel;
+import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import specs.UserSpecs;
 
 import java.time.LocalDate;
-
+import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
-import static io.restassured.http.ContentType.JSON;
-import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class HW15Tests {
-
+public class HW15Tests extends TestBase {
     @Test
     void checkStatusCodeTest() {
-        given()
-                .when()
-                .get("https://reqres.in/api/users?page=2")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(200);
+        Response response = step("Make request", ()->
+                given(UserSpecs.userRequestSpecification)
+                        .queryParam("page","2")
+                        .when()
+                        .get("/users"));
+        step("Check response", ()->{
+            response.then()
+                    .spec(UserSpecs.userResponseSpecification200);
+        });
     }
+
     @Test
     void checkSingleUserTest() {
-        given()
-                .when()
-                .get("https://reqres.in/api/users/2")
-                .then()
-                .contentType(JSON)
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("data.id", is(2))
-                .body("data.email", is("janet.weaver@reqres.in"))
-                .body("data.first_name", is("Janet"))
-                .body("data.last_name", is("Weaver"));
+        LombokModel response =step("Make request", ()->
+                given(UserSpecs.userRequestSpecification)
+                        .when()
+                        .get("/users/2")
+                        .then()
+                        .spec(UserSpecs.userResponseSpecificationJson200)
+                        .extract().as(LombokModel.class));
+        step("Check response", ()-> {
+            assertEquals(2, response.getData().getId());
+            assertEquals("janet.weaver@reqres.in", response.getData().getEmail());
+            assertEquals("Janet", response.getData().getFirst_name());
+            assertEquals("Weaver", response.getData().getLast_name());
+        });
     }
     @Test
     void checkSingleUserNotFoundTest() {
-        given()
-                .when()
-                .get("https://reqres.in/api/users/23")
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(404)
-                .body(equalTo("{}"));
+        LombokModel response = step("Make request", ()->
+                given(UserSpecs.userRequestSpecification)
+                        .when()
+                        .get("/users/23")
+                        .then()
+                        .spec(UserSpecs.userResponseSpecification404)
+                        .extract().as(LombokModel.class));
+        step("Check response", ()-> {
+            assertNull(response.getData());
+            assertNull(response.getSupport());
+        });
     }
     @Test
     void checkCreateTest() {
-        String authData = "{\n\"name\": \"arsen\",\n\"job\": \"tester\"\n}";
+        LombokModel authData = new LombokModel();
+        authData.setData(new LombokModel.Data());
+        authData.setJob("tester");
+        authData.setName("arsen");
 
-        given()
-                .body(authData)
-                .contentType(JSON)
-                .log().uri()
+        LombokModel response = step("Make request", ()->
+                given(UserSpecs.userRequestSpecification)
+                        .body(authData)
+                        .when()
+                        .post("/users")
+                        .then()
+                        .spec(UserSpecs.userResponseSpecification201)
+                        .extract().as(LombokModel.class));
+        step("Check response", ()-> {
+            assertEquals("arsen", response.getName());
+            assertEquals("tester", response.getJob());
+        });
 
-                .when()
-                .post("https://reqres.in/api/users")
-
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(201)
-                .body("name", is("arsen"))
-                .body("job", is("tester"));
     }
     @Test
     void checkUpdateTest() {
-        String authData = "{\n\"name\": \"arsen\",\n\"job\": \"test lead\"\n}";
+        LombokModel authData = new LombokModel();
+        authData.setData(new LombokModel.Data());
+        authData.setJob("test lead");
+        authData.setName("arsen");
+        LombokModel response = step("Make request", ()->
+                given(UserSpecs.userRequestSpecification)
+                        .body(authData)
+                        .when()
+                        .put("/users/2")
+                        .then()
+                        .spec(UserSpecs.userResponseSpecification200)
+                        .extract().as(LombokModel.class));
+        step("Check response", ()->{
+            assertEquals("arsen", response.getName());
+            assertEquals("test lead", response.getJob());
+            assertTrue( response.getUpdatedAt().startsWith(String.valueOf(LocalDate.now())));
+        });
 
-        given()
-                .body(authData)
-                .contentType(JSON)
-                .log().uri()
-
-                .when()
-                .put("https://reqres.in/api/users/2")
-
-                .then()
-                .log().status()
-                .log().body()
-                .statusCode(200)
-                .body("name", is("arsen"))
-                .body("job", is("test lead"))
-                .body( "updatedAt", startsWith(String.valueOf(LocalDate.now())));
     }
 
 }

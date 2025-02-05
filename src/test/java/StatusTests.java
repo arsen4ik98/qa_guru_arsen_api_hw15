@@ -54,6 +54,7 @@ public class StatusTests {
                 .body("total", is(20))
                 .body("browsers.chrome", hasKey("100.0"))
                 .body("browsers.firefox", hasKey("97.0"));
+        
     }
 
 
