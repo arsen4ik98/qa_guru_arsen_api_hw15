@@ -1,5 +1,8 @@
+import Models.LombokModel;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
+import specs.UserSpecs;
+
 import java.time.LocalDate;
 import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;

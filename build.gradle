@@ -15,6 +15,11 @@ compileTestJava {
     options.encoding = 'UTF-8'
 }
 
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
 allure {
     report {
         version.set(allureVersion)
@@ -31,11 +36,14 @@ allure {
 
 dependencies {
     testImplementation(
+            "io.qameta.allure:allure-selenide:$allureVersion",
+            'com.codeborne:selenide:6.19.1',
             "io.rest-assured:rest-assured:$restAssuredVersion",
             "io.rest-assured:json-schema-validator:$restAssuredVersion",
             "io.qameta.allure:allure-rest-assured:$allureVersion",
             "org.junit.jupiter:junit-jupiter:5.10.0",
-            'org.slf4j:slf4j-simple:2.0.7')
+            'org.slf4j:slf4j-simple:2.0.7'
+    )
 }
 
 tasks.withType(Test) {
@@ -47,5 +55,10 @@ tasks.withType(Test) {
             events "started", "skipped", "failed", "standard_error", "standard_out"
             exceptionFormat "short"
         }
+    }
+}
+task  bookStore_test(type: Test) {
+    useJUnitPlatform {
+        includeTags("bookStore")
     }
 }
