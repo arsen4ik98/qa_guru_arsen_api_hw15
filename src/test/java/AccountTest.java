@@ -32,12 +32,13 @@ public class AccountTest extends TestBase {
     @Test
     void deletBookUiTest() {
         Response responseapiAccount = apiAccount.loging(userName, password);
+        Response responseapiAccountToken = apiAccount.gettoken(userName, password);
         System.out.println("Response: " + responseapiAccount.prettyPrint());
         System.out.println("Username: " + userName);
         System.out.println("Password: " + password);
-        String userId = responseapiAccount.path("userId");
-        String token = responseapiAccount.path("token");
-        String expires = responseapiAccount.path("expires");
+        String userId = responseapiAccount.path("id");
+        String token = responseapiAccountToken.path("token");
+        String expires = responseapiAccountToken.path("expires");
         apiBookStore.deleteBooks(userId, token);
         apiBookStore.addBooks(bookJsName,bookJsIsbn , token, userId);
         apiBookStore.addBooks( bookGitName,bookGitIsbn, token, userId);
