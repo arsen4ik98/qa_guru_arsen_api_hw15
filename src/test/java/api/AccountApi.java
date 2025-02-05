@@ -5,8 +5,7 @@ import io.restassured.response.Response;
 import Models.AccountModel;
 
 import static io.restassured.RestAssured.given;
-import static specs.UserSpecs.userRequestSpecification;
-import static specs.UserSpecs.userResponseSpecification200;
+import static specs.UserSpecs.*;
 
 
 public class AccountApi {
@@ -23,7 +22,7 @@ public class AccountApi {
                 .when()
                 .post("/Account/v1/Login")
                 .then()
-                .spec(userResponseSpecification200)
+                .spec(userResponseSpecification201True)
                 .extract().response();
         return response;
     }
