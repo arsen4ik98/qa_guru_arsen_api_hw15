@@ -38,6 +38,7 @@ public class AccountTest extends TestBase {
         String userId = responseapiAccount.path("userId");
         String token = responseapiAccount.path("token");
         String expires = responseapiAccount.path("expires");
+        apiBookStore.deleteBooks(userId, token);
         apiBookStore.addBooks(bookJsName,bookJsIsbn , token, userId);
         apiBookStore.addBooks( bookGitName,bookGitIsbn, token, userId);
         Response responseGetUserBooks = apiAccount.getUserBooks(token, userId);
