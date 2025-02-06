@@ -1,3 +1,4 @@
+
 import config.BookConfig;
 import pages.AccountPage;
 
@@ -13,7 +14,7 @@ import static com.codeborne.selenide.Selenide.$;
 import static org.hamcrest.Matchers.*;
 
 @Tag("bookStore")
-public class AccountTest extends TestBase {
+public class AccountTest extends tests.TestBase {
     AccountApi apiAccount = new AccountApi();
     BookApi apiBookStore = new BookApi();
     LoginPage poLogin = new LoginPage();
