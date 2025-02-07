@@ -1,4 +1,4 @@
-import Models.LombokModel;
+import models.LombokModel;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import specs.UserSpecs;
@@ -94,5 +94,6 @@ public class HW15Tests extends tests.TestBase {
         });
 
     }
+
 
 }
