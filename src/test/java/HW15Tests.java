@@ -1,4 +1,4 @@
-import Models.LombokModel;
+import models.LombokModel;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.Test;
 import specs.UserSpecs;
@@ -8,7 +8,7 @@ import static io.qameta.allure.Allure.step;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class HW15Tests extends TestBase {
+public class HW15Tests extends tests.TestBase {
     @Test
     void checkStatusCodeTest() {
         Response response = step("Make request", ()->
@@ -94,5 +94,6 @@ public class HW15Tests extends TestBase {
         });
 
     }
+
 
 }
