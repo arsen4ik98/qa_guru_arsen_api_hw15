@@ -1,12 +1,15 @@
 package api;
 
+import config.AuthConfig;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import models.BookModel;
+import org.aeonbits.owner.ConfigFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.codeborne.selenide.Configuration.baseUrl;
 import static helpers.CustomApiListener.withCustomTemplates;
 import static io.restassured.RestAssured.given;
 import static specs.UserSpecs.*;
@@ -15,10 +18,9 @@ import static specs.UserSpecs.*;
 public class BookApi {
     @Step("Удаляем все книги в профиле используя API")
     public Response deleteBooks(String userId, String token) {
-        String baseUrl = System.getProperty("baseUrl", "https://demoqa.com");
-        if (baseUrl.endsWith("/")) {
-            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-        }
+        AuthConfig authConfig = ConfigFactory.create(AuthConfig.class);
+        String baseUrl = authConfig.baseUrl();
+
         Response response = given(userRequestSpecification)
                 .header("Authorization", "Bearer " + token)
                 .queryParam("UserId", userId)
@@ -32,16 +34,16 @@ public class BookApi {
     @Step("Добавляем  книгу {bookName} в профиль используя API")
     public  Response addBooks (String bookName,String bookIsbn, String token,String userId) {
         BookModel getBookModel = new BookModel();
+        AuthConfig authConfig = ConfigFactory.create(AuthConfig.class);
+        String baseUrl = authConfig.baseUrl();
         BookModel.CollectionOfIsbns collection = new BookModel.CollectionOfIsbns();
         getBookModel.setUserId(userId);
         collection.setIsbn(bookIsbn);
         List<BookModel.CollectionOfIsbns> collections =new ArrayList<>();
         collections.add(collection);
         getBookModel.setCollectionOfIsbns(collections);
-        String baseUrl = System.getProperty("baseUrl", "https://demoqa.com");
-        if (baseUrl.endsWith("/")) {
-            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-        }
+
+
         Response response =given(userRequestSpecification)
                 .body(getBookModel)
                 .filter(withCustomTemplates())
@@ -58,10 +60,8 @@ public class BookApi {
         BookModel bookModel =new BookModel();
         bookModel.setUserId(userId);
         bookModel.setIsbn(bookIsbn);
-        String baseUrl = System.getProperty("baseUrl", "https://demoqa.com");
-        if (baseUrl.endsWith("/")) {
-            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
-        }
+        AuthConfig authConfig = ConfigFactory.create(AuthConfig.class);
+        String baseUrl = authConfig.baseUrl();
         Response response =given(userRequestSpecification)
                 .body(bookModel)
                 .header("Authorization","Bearer "+token)

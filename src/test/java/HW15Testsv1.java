@@ -7,6 +7,7 @@ import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.*;
 
+
 public class HW15Testsv1 {
     @Test
     void checkStatusCodeTest() {
@@ -14,8 +15,7 @@ public class HW15Testsv1 {
                 .when()
                 .get("https://reqres.in/api/users?page=2")
                 .then()
-                .log().status()
-                .log().body()
+                .log().all()
                 .statusCode(200);
     }
     @Test
@@ -25,8 +25,7 @@ public class HW15Testsv1 {
                 .get("https://reqres.in/api/users/2")
                 .then()
                 .contentType(JSON)
-                .log().status()
-                .log().body()
+                .log().all()
                 .statusCode(200)
                 .body("data.id", is(2))
                 .body("data.email", is("janet.weaver@reqres.in"))
@@ -39,8 +38,7 @@ public class HW15Testsv1 {
                 .when()
                 .get("https://reqres.in/api/users/23")
                 .then()
-                .log().status()
-                .log().body()
+                .log().all()
                 .statusCode(404)
                 .body(equalTo("{}"));
     }
@@ -52,13 +50,10 @@ public class HW15Testsv1 {
                 .body(authData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .post("https://reqres.in/api/users")
-
                 .then()
-                .log().status()
-                .log().body()
+                .log().all()
                 .statusCode(201)
                 .body("name", is("morpheus"))
                 .body("job", is("leader"));
@@ -71,13 +66,10 @@ public class HW15Testsv1 {
                 .body(authData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .put("https://reqres.in/api/users/2")
-
                 .then()
-                .log().status()
-                .log().body()
+                .log().all()
                 .statusCode(200)
                 .body("name", is("morpheus"))
                 .body("job", is("zion resident"))
@@ -92,13 +84,10 @@ public class HW15Testsv1 {
                 .body(authData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .post("https://reqres.in/api/users")
-
                 .then()
-                .log().status()
-                .log().body()
+                .log().all()
                 .statusCode(201)
                 .body("name", is("morpheus"))
                 .body("job", is("leader"))
@@ -110,13 +99,10 @@ public class HW15Testsv1 {
                 .body(authData)
                 .contentType(JSON)
                 .log().uri()
-
                 .when()
                 .delete("https://reqres.in/api/users/" + userId)
-
                 .then()
-                .log().status()
-                .log().body()
+                .log().all()
                 .statusCode(204);
 
     }

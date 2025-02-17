@@ -1,9 +1,7 @@
-package tests;
-
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import config.BookConfig;
+import config.AuthConfig;
 import config.WebDriverConfig;
 import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
@@ -19,7 +17,7 @@ import java.util.Map;
 import java.util.Properties;
 
 public class TestBase {
-    BookConfig bookStoreConfig = new BookConfig();
+    AuthConfig authConfig = ConfigFactory.create(AuthConfig.class);
     static WebDriverConfig config;
 
     @BeforeAll
@@ -42,8 +40,6 @@ public class TestBase {
 
         config = ConfigFactory.create(WebDriverConfig.class, System.getProperties());
 
-
-        config = ConfigFactory.create(WebDriverConfig.class);
         System.out.println(System.getProperties());
         System.out.println("Is Remote: " + config.getIsRemote());
         System.out.println("Browser: " + config.getBrowser());
