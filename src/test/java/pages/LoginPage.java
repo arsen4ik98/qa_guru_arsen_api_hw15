@@ -8,7 +8,11 @@ import static com.codeborne.selenide.WebDriverRunner.getWebDriver;
 public class LoginPage {
     @Step("Открываем техническую страницу  Логинимся на странице ")
     public LoginPage loginPageRegisteredPerson(String userId, String expires, String token){
-        open("/favicon.ico");
+        String baseUrl = System.getProperty("baseUrl", "https://demoqa.com");
+        if (baseUrl.endsWith("/")) {
+            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+        }
+        open(baseUrl + "/favicon.ico");
         getWebDriver().manage().addCookie(new Cookie("userID",userId));
         getWebDriver().manage().addCookie(new Cookie("expires",expires));
         getWebDriver().manage().addCookie(new Cookie("token",token));
