@@ -59,8 +59,6 @@ public class TestBase {
                     "enableVideo", true
             ));
             Configuration.browserCapabilities = capabilities;
-
-
         }
     }
 
@@ -68,6 +66,7 @@ public class TestBase {
     void beforeEach() {
         // Логирование для Allure
         SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
+        Selenide.open(Configuration.baseUrl);
     }
 
 

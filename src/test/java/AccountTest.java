@@ -38,11 +38,13 @@ public class AccountTest extends TestBase {
         String userId = responseapiAccount.path("userId");
         String token = responseapiAccount.path("token");
         String expires = responseapiAccount.path("expires");
+        System.out.println("token: " + token);
+        System.out.println("expires: " + expires);
         apiBookStore.deleteBooks(userId, token);
-        apiBookStore.addBooks(bookJsName,bookJsIsbn , token, userId);
-        apiBookStore.addBooks( bookGitName,bookGitIsbn, token, userId);
+        apiBookStore.addBooks(bookJsIsbn , token, userId);
+        apiBookStore.addBooks(bookGitIsbn, token, userId);
         Response responseGetUserBooks = apiAccount.getUserBooks(token, userId);
-        responseGetUserBooks.then().body("books.isbn", hasItems(bookGitIsbn, bookJsIsbn));
+        apiBookStore.assertBooksInProfile(responseGetUserBooks, bookGitIsbn, bookJsIsbn);
         poLogin.loginPageRegisteredPerson(userId, expires, token);
         poAccount.openAccount();
         poAccount.checkUserName(userName);
