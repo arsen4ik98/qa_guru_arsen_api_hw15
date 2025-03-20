@@ -1,29 +1,27 @@
 import config.AuthConfig;
+import helpers.AuthHelper;
 import org.aeonbits.owner.ConfigFactory;
 import pages.AccountPage;
 
 import api.AccountApi;
-import pages.LoginPage;
 import api.BookApi;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-import static org.hamcrest.Matchers.*;
-
 @Tag("bookStore")
 public class AccountTest extends TestBase {
     AccountApi apiAccount = new AccountApi();
     BookApi apiBookStore = new BookApi();
-    LoginPage poLogin = new LoginPage();
+    AuthHelper poLogin = new AuthHelper();
     AccountPage poAccount = new AccountPage();
     AuthConfig authConfig = ConfigFactory.create(AuthConfig.class);
     String userName = authConfig.userName();
     String password = authConfig.password();
     String bookGitIsbn = "9781449325862";
     String bookJsIsbn = "9781449331818";
-    public String  bookGitName = "Git Pocket Guide";
+    String  bookGitName = "Git Pocket Guide";
     String bookJsName = "Learning JavaScript Design Patterns";
 
 
@@ -32,14 +30,9 @@ public class AccountTest extends TestBase {
     @Test
     void deleteBookUiTest() {
         Response responseapiAccount = apiAccount.loging(userName, password);
-        System.out.println("Response: " + responseapiAccount.prettyPrint());
-        System.out.println("Username: " + userName);
-        System.out.println("Password: " + password);
         String userId = responseapiAccount.path("userId");
         String token = responseapiAccount.path("token");
         String expires = responseapiAccount.path("expires");
-        System.out.println("token: " + token);
-        System.out.println("expires: " + expires);
         apiBookStore.deleteBooks(userId, token);
         apiBookStore.addBooks(bookJsIsbn , token, userId);
         apiBookStore.addBooks(bookGitIsbn, token, userId);

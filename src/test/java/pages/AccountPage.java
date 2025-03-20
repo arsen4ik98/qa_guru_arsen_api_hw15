@@ -4,6 +4,7 @@ import io.qameta.allure.Step;
 
 import static com.codeborne.selenide.Selenide.*;
 import static com.codeborne.selenide.Condition.text;
+import static io.qameta.allure.Allure.step;
 
 public class AccountPage {
     private SelenideElement booksPanel = $(".profile-wrapper"),
@@ -31,15 +32,19 @@ public class AccountPage {
         accountPanel.shouldHave(text(userName));
         return this;
     }
-    @Step("Удаляем книгу {bookName}  используя  UI ")
-    public AccountPage deleteBook(String bookName){
-        deleteBook.click();
+    @Step("Удаляем книгу {bookName} используя UI ")
+    public AccountPage deleteBook(String bookName) {
+        step("Удаляем книгу: " + bookName, () -> {
+            deleteBook.click();
+        });
         return this;
     }
 
     @Step("Подтверждаем удаление книги {bookName} используя  UI ")
     public AccountPage deleteBookOk(String bookName){
+        step("Подтверждаем удаление книги: " + bookName, () -> {
         closeSmallModalOk.click();
+        });
         return this;
     }
 }
