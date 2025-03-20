@@ -17,11 +17,17 @@ public class ResponseSpecs {
             .log().all()
             .contentType(JSON);
 
+    public static final RequestSpecification userRequestSpecificationbaseUrl = with()
+            .baseUri("https://demoqa.com")
+            .contentType(JSON)
+            .log().all();
+
     public static ResponseSpecification createResponseSpecification(int statusCode, boolean expectJson) {
         ResponseSpecBuilder builder = new ResponseSpecBuilder()
                 .expectStatusCode(statusCode)
                 .log(ALL);
 
+        // Если ожидаем JSON, добавляем соответствующую проверку
         if (expectJson) {
             builder.expectContentType(JSON);
         }
@@ -36,4 +42,5 @@ public class ResponseSpecs {
     public static final ResponseSpecification userResponseSpecification404 = createResponseSpecification(404, false);
     public static final ResponseSpecification userResponseSpecificationJson200 = createResponseSpecification(200, true);
     public static final ResponseSpecification userResponseSpecification204 = createResponseSpecification(204,false);
+
 }
