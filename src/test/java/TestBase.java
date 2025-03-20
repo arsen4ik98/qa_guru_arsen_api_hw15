@@ -25,6 +25,7 @@ public class TestBase {
         String env = System.getProperty("env", "local");
         System.out.println("Environment: " + env);
 
+
         // Загрузка файла из classpath
         try (InputStream input = TestBase.class.getClassLoader().getResourceAsStream(env + ".properties")) {
             if (input == null) {
