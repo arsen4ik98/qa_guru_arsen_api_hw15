@@ -15,12 +15,8 @@ public class ResponseSpecs {
     public static final RequestSpecification userRequestSpecification = with()
             .filter(withCustomTemplates())
             .log().all()
+            .baseUri("https://demoqa.com")  // <-- Добавляем baseUri
             .contentType(JSON);
-
-    public static final RequestSpecification userRequestSpecificationbaseUrl = with()
-            .baseUri("https://demoqa.com")
-            .contentType(JSON)
-            .log().all();
 
     public static ResponseSpecification createResponseSpecification(int statusCode, boolean expectJson) {
         ResponseSpecBuilder builder = new ResponseSpecBuilder()
