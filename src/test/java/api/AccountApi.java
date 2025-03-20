@@ -35,7 +35,7 @@ public class AccountApi {
                 .when()
                 .post("/Account/v1/GenerateToken")
                 .then()
-                .spec(userResponseSpecification201True)
+                .spec(userResponseSpecification200)
                 .extract().response();
         return response;
     }
