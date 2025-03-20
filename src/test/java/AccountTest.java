@@ -29,6 +29,7 @@ public class AccountTest extends TestBase {
     @DisplayName("UI проверка удаления одной книге в профиле")
     @Test
     void deleteBookUiTest() {
+        apiAccount.gettoken(userName,password);
         Response responseapiAccount = apiAccount.loging(userName, password);
         String userId = responseapiAccount.path("userId");
         String token = responseapiAccount.path("token");
