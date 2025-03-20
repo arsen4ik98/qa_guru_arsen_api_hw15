@@ -12,19 +12,16 @@ import static io.restassured.http.ContentType.JSON;
 
 public class ResponseSpecs {
 
-    // Базовая спецификация для запросов
     public static final RequestSpecification userRequestSpecification = with()
             .filter(withCustomTemplates())
             .log().all()
             .contentType(JSON);
 
-    // Универсальный метод для ResponseSpecification
     public static ResponseSpecification createResponseSpecification(int statusCode, boolean expectJson) {
         ResponseSpecBuilder builder = new ResponseSpecBuilder()
                 .expectStatusCode(statusCode)
                 .log(ALL);
 
-        // Если ожидаем JSON, добавляем соответствующую проверку
         if (expectJson) {
             builder.expectContentType(JSON);
         }
